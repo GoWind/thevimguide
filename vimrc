@@ -6,6 +6,8 @@ inoremap jj <Esc>
 inoremap {  {}<Esc>i
 inoremap [  []<Esc>i
 inoremap ( ()<Esc>i
+inoremap " ""<Esc>i
+inoremap ' ''<Esc>i
 "nnoremap confr :so $MYVIMRC<CR>
 
 let mapleader=","
