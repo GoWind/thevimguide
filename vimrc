@@ -3,12 +3,14 @@ set expandtab
 nnoremap ; :
 
 inoremap jj <Esc>
+
+"brackets
 inoremap {  {}<Esc>i
 inoremap [  []<Esc>i
 inoremap ( ()<Esc>i
 inoremap " ""<Esc>i
 inoremap ' ''<Esc>i
-"nnoremap confr :so $MYVIMRC<CR>
+nnoremap confr :so $MYVIMRC<CR>
 
 let mapleader=","
 
@@ -25,6 +27,14 @@ Plug 'liquidz/vim-iced', {'for': 'clojure'}
 
 "surround for quoting and enclosing stuff with braces
 Plug 'tpope/vim-surround'
+
+"git
+Plug 'tpope/vim-fugitive'
+
+"Vimwiki
+Plug 'vimwiki/vimwiki'
+
+
 
 
 
@@ -49,20 +59,29 @@ nmap <C-k> <C-W>k
 nnoremap <F6> :NERDTreeToggle<CR>
 
 augroup filetype_go
+  "This will echo the shell commands executed
+  "by the vim-go plugin
+  let g:go_debug=['shell-commands']
+  let maplocalleader=" "
   nmap <leader>b <Plug>(go-build)
   nmap <leader>r <Plug>(go-run)
+  nmap <leader>t <Plug>(go-test)
   "quick fix window
-  nmap <leader><C-o> :copen<CR>
-  nmap <leader><C-e> :ccl<CR>
-  nmap <leader><C-n> :cnext<CR>
-  nmap <leader><C-p> :cprevious<CR>
+  nmap <localleader>o :copen<CR>
+  nmap <localleader>c :ccl<CR>
+  nmap <localleader>n :cnext<CR>
+  nmap <localleader>p :cprevious<CR>
 augroup END
 
 augroup filetype_clojure
+  "https://gist.github.com/cszentkiralyi/a9a4e78dc746e29e0cc8
+  nnoremap <Space> <Nop>
+  let maplocalleader=" "
+
   let g:iced_enable_default_key_mappings=v:true
-  let maplocalleader="\\"
   nmap <localleader>s <Plug>(iced_slurp)
   nmap <localleader>b <Plug>(iced_barf)
+  nmap <leader>rr <Plug>(iced_require)
 augroup END
 
 "use * in Normal mode, to jump to search word under cursor in the forward direction
