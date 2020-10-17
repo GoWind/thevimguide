@@ -13,12 +13,19 @@ inoremap ' ''<Esc>i
 nnoremap confr :so $MYVIMRC<CR>
 
 let mapleader=","
+let maplocalleader=" "
+nnoremap <Space> <Nop>
+nmap <localleader>n :cnext<CR>
+nmap <localleader>p :cprevious<CR>
 
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
 Plug 'jremmen/vim-ripgrep'
+
+"Prettify typescript code
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 "clojure plugins
 Plug 'junegunn/fzf'
@@ -34,7 +41,8 @@ Plug 'tpope/vim-fugitive'
 "Vimwiki
 Plug 'vimwiki/vimwiki'
 
-
+"Typescript
+Plug 'quramy/tsuquyomi'
 
 
 
@@ -56,12 +64,14 @@ nmap <C-k> <C-W>k
 "but it is too noisy
 "autocmd VimEnter * NERDTree
 
+"
+let g:vimwiki =[{'path': '~/vimwiki'},{'path': '~/work/vimwiki'}]
 nnoremap <F6> :NERDTreeToggle<CR>
 
 augroup filetype_go
   "This will echo the shell commands executed
   "by the vim-go plugin
-  let g:go_debug=['shell-commands']
+  "let g:go_debug=['shell-commands']
   let maplocalleader=" "
   nmap <leader>b <Plug>(go-build)
   nmap <leader>r <Plug>(go-run)
