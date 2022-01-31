@@ -1,50 +1,54 @@
-set ts=2
+o not care about Vi compatibility
+set nocompatible
+set ts=4
+set sts=2
+set shiftwidth=2
 set expandtab
+set fileencodings=utf-8,gb18030,ucs-bom,cp936
+
+"
+"set list
+"set listchars=tab:>-
 nnoremap ; :
 
 inoremap jj <Esc>
+"inoremap {  {}<Esc>i
+"inoremap [  []<Esc>i
+"inoremap ( ()<Esc>i
+"inoremap " ""<Esc>i
+"inoremap ' ''<Esc>i
 
-"brackets
-inoremap {  {}<Esc>i
-inoremap [  []<Esc>i
-inoremap ( ()<Esc>i
-inoremap " ""<Esc>i
-inoremap ' ''<Esc>i
-nnoremap confr :so $MYVIMRC<CR>
+"enable the next line to type `confr` in normal mode, to reload the Vim configuration file
+"nnoremap confr :so $MYVIMRC<CR>
 
 let mapleader=","
-let maplocalleader=" "
-nnoremap <Space> <Nop>
-nmap <localleader>n :cnext<CR>
-nmap <localleader>p :cprevious<CR>
 
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
 Plug 'jremmen/vim-ripgrep'
+"Typescript 
+Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi'
 
-"Prettify typescript code
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-
-"clojure plugins
+"Plugin for working nicely with fzf
 Plug 'junegunn/fzf'
-Plug 'guns/vim-sexp',    {'for': 'clojure'}
-Plug 'liquidz/vim-iced', {'for': 'clojure'}
-
+"When opening a file, figures out the "root" of the file's project
+"Useful as Rg, fzf etc will search recursively till root of file system
+"at times and we need to stop at a certain ancestor (eg: .git, package.json,
+"Makefile etc)
+Plug 'airblade/vim-rooter'
 "surround for quoting and enclosing stuff with braces
 Plug 'tpope/vim-surround'
 
-"git
-Plug 'tpope/vim-fugitive'
+"Zig lang
+Plug 'ziglang/zig.vim'
 
-"Vimwiki
-Plug 'vimwiki/vimwiki'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-"Typescript
-Plug 'quramy/tsuquyomi'
-
-
+"Show open buffers in a line above the status line
+Plug 'bling/vim-bufferline'
 
 call plug#end()
 
@@ -59,41 +63,53 @@ nmap <C-l> <C-W>l
 nmap <C-h> <C-W>h
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
+nmap <C-.> <C-W>>
 
 "uncommment below to have NERDTree open when you start the editor
 "but it is too noisy
 "autocmd VimEnter * NERDTree
 
-"
-let g:vimwiki =[{'path': '~/vimwiki'},{'path': '~/work/vimwiki'}]
 nnoremap <F6> :NERDTreeToggle<CR>
+nnoremap <F3> :set nu!<CR>
 
 augroup filetype_go
-  "This will echo the shell commands executed
-  "by the vim-go plugin
-  "let g:go_debug=['shell-commands']
-  let maplocalleader=" "
   nmap <leader>b <Plug>(go-build)
   nmap <leader>r <Plug>(go-run)
-  nmap <leader>t <Plug>(go-test)
   "quick fix window
-  nmap <localleader>o :copen<CR>
-  nmap <localleader>c :ccl<CR>
-  nmap <localleader>n :cnext<CR>
-  nmap <localleader>p :cprevious<CR>
+  nmap <leader><C-o> :copen<CR>
+  nmap <leader><C-e> :ccl<CR>
+  nmap <leader><C-n> :cnext<CR>
+  nmap <leader><C-p> :cprevious<CR>
 augroup END
 
 augroup filetype_clojure
-  "https://gist.github.com/cszentkiralyi/a9a4e78dc746e29e0cc8
-  nnoremap <Space> <Nop>
-  let maplocalleader=" "
-
   let g:iced_enable_default_key_mappings=v:true
+  let maplocalleader="\\"
   nmap <localleader>s <Plug>(iced_slurp)
   nmap <localleader>b <Plug>(iced_barf)
-  nmap <leader>rr <Plug>(iced_require)
 augroup END
 
+augroup filetype_zig
+  "zig loads errors in the location list
+  "set shortcuts to manipulate the location list
+  nmap <leader>lo :lopen<CR>
+  nmap <leader>lc :lclose<CR>
+  nmap <leader>ln :lnext<CR>
+  nmap <leader>lp :lprevious<CR>
+augroup END
+
+"`>a points to end of selection in visual mode
+"`<i point to beginning of selection in visual mode
+vmap <leader>sq <Esc>`>a'<ESC>`<i'<ESC>
+vmap <leader>dq <Esc>`>a"<ESC>`<i"<ESC>
 "use * in Normal mode, to jump to search word under cursor in the forward direction
 "use # in Normal mode, to jump to search word under cursor in the backward direction
 
+"to load configuration from the current file, use `:so %`
+"doing so while editing ~/.vimrc will cause Vim to reload your
+"configuration
+let g:coc_disable_startup_warning = 1
+let g:rooter_patterns = [".git", "Makefile", "build.zig", "package.json"]
+let g:fzf_preview_window = ['up:40%', 'ctrl-/']
+
+nmap <leader><tab> <plug>(fzf-maps-n)
