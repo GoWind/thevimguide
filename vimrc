@@ -32,8 +32,11 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 
+"Plugin for install fzf binary, if it doesn't exist
+Plug 'junegunn/fzf', { 'do' : { -> fzf#install() } }
 "Plugin for working nicely with fzf
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 "When opening a file, figures out the "root" of the file's project
 "Useful as Rg, fzf etc will search recursively till root of file system
 "at times and we need to stop at a certain ancestor (eg: .git, package.json,
