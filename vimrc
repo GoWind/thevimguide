@@ -1,4 +1,4 @@
-o not care about Vi compatibility
+"do not care about Vi compatibility
 set nocompatible
 set ts=4
 set sts=2
@@ -32,11 +32,8 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 
-"Plugin for install fzf binary, if it doesn't exist
-Plug 'junegunn/fzf', { 'do' : { -> fzf#install() } }
 "Plugin for working nicely with fzf
-Plug 'junegunn/fzf.vim'
-
+Plug 'junegunn/fzf'
 "When opening a file, figures out the "root" of the file's project
 "Useful as Rg, fzf etc will search recursively till root of file system
 "at times and we need to stop at a certain ancestor (eg: .git, package.json,
@@ -53,7 +50,17 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Show open buffers in a line above the status line
 Plug 'bling/vim-bufferline'
 
+"Clojure related plugins
+Plug 'liquidz/vim-iced', {'for': 'clojure'}
+Plug 'guns/vim-sexp',    {'for': 'clojure'}
+
+
 call plug#end()
+
+" Enable vim-iced's default key mapping
+" This is recommended for newbies
+let g:iced_enable_default_key_mappings = v:true
+
 
 "search stuff
 set ignorecase
@@ -74,6 +81,9 @@ nmap <C-.> <C-W>>
 
 nnoremap <F6> :NERDTreeToggle<CR>
 nnoremap <F3> :set nu!<CR>
+
+"TODO: Need a better of this
+nnoremap <C-a> :Lexplore!<CR>
 
 augroup filetype_go
   nmap <leader>b <Plug>(go-build)
@@ -101,6 +111,12 @@ augroup filetype_zig
   nmap <leader>lp :lprevious<CR>
 augroup END
 
+augroup AutoDeleteNetrwHiddenBuffers
+  au!
+  au FileType netrw setlocal bufhidden=wipe
+augroup end
+
+
 "`>a points to end of selection in visual mode
 "`<i point to beginning of selection in visual mode
 vmap <leader>sq <Esc>`>a'<ESC>`<i'<ESC>
@@ -116,3 +132,5 @@ let g:rooter_patterns = [".git", "Makefile", "build.zig", "package.json"]
 let g:fzf_preview_window = ['up:40%', 'ctrl-/']
 
 nmap <leader><tab> <plug>(fzf-maps-n)
+"jump to declaration of item under cursor vim
+nmap <leader>o <plug>(coc-declaration)
