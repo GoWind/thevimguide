@@ -32,6 +32,7 @@ Plug 'preservim/nerdtree'
 Plug 'jremmen/vim-ripgrep'
 "Typescript 
 Plug 'leafgarland/typescript-vim'
+"Enable this plugin for typescript support without `coc`
 "Plug 'Quramy/tsuquyomi'
 
 "Plugin for working nicely with fzf
@@ -85,7 +86,7 @@ nmap <C-k> <C-W>k
 nmap <C-.> <C-W>>
 
 "uncommment below to have NERDTree open when you start the editor
-"but it is too noisy
+"currently disabled as it is too noisy
 "autocmd VimEnter * NERDTree
 
 nnoremap <F6> :NERDTreeToggle<CR>
@@ -112,6 +113,8 @@ augroup filetype_clojure
 augroup END
 
 augroup filetype_zig
+  "If I don't silent, :w brings up the fucking message log
+  "every fucking time
   silent! autocmd BufWritePre *.zig call CocAction('format')
   "zig loads errors in the location list
   "set shortcuts to manipulate the location list
