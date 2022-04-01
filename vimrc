@@ -5,6 +5,8 @@ set sts=2
 set shiftwidth=2
 set expandtab
 set fileencodings=utf-8,gb18030,ucs-bom,cp936
+"fuck saving .swp files. very annoying
+set nobackup
 
 "
 "set list
@@ -30,10 +32,11 @@ Plug 'preservim/nerdtree'
 Plug 'jremmen/vim-ripgrep'
 "Typescript 
 Plug 'leafgarland/typescript-vim'
-Plug 'Quramy/tsuquyomi'
+"Plug 'Quramy/tsuquyomi'
 
 "Plugin for working nicely with fzf
 Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 "When opening a file, figures out the "root" of the file's project
 "Useful as Rg, fzf etc will search recursively till root of file system
 "at times and we need to stop at a certain ancestor (eg: .git, package.json,
@@ -44,7 +47,13 @@ Plug 'tpope/vim-surround'
 
 "Zig lang
 Plug 'ziglang/zig.vim'
+"Zig plugin ^ auto runs `zig fmt` on the file via the 
+"Zig exe. We will do all of that via `coc-zig` instead
+"Use the zig plugin only for syntax highlighting
+let g:zig_fmt_autosave = 0
 
+"CocList hides my cursor . show it using
+let g:coc_disable_transparent_cursor=1
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "Show open buffers in a line above the status line
@@ -103,6 +112,7 @@ augroup filetype_clojure
 augroup END
 
 augroup filetype_zig
+  silent! autocmd BufWritePre *.zig call CocAction('format')
   "zig loads errors in the location list
   "set shortcuts to manipulate the location list
   nmap <leader>lo :lopen<CR>
@@ -132,5 +142,5 @@ let g:rooter_patterns = [".git", "Makefile", "build.zig", "package.json"]
 let g:fzf_preview_window = ['up:40%', 'ctrl-/']
 
 nmap <leader><tab> <plug>(fzf-maps-n)
-"jump to declaration of item under cursor vim
 nmap <leader>o <plug>(coc-declaration)
+
