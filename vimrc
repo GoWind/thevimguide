@@ -32,7 +32,6 @@ Plug 'preservim/nerdtree'
 Plug 'jremmen/vim-ripgrep'
 "Typescript 
 Plug 'leafgarland/typescript-vim'
-"Enable this plugin for typescript support without `coc`
 "Plug 'Quramy/tsuquyomi'
 
 "Plugin for working nicely with fzf
@@ -86,7 +85,7 @@ nmap <C-k> <C-W>k
 nmap <C-.> <C-W>>
 
 "uncommment below to have NERDTree open when you start the editor
-"currently disabled as it is too noisy
+"but it is too noisy
 "autocmd VimEnter * NERDTree
 
 nnoremap <F6> :NERDTreeToggle<CR>
@@ -113,8 +112,6 @@ augroup filetype_clojure
 augroup END
 
 augroup filetype_zig
-  "If I don't silent, :w brings up the fucking message log
-  "every fucking time
   silent! autocmd BufWritePre *.zig call CocAction('format')
   "zig loads errors in the location list
   "set shortcuts to manipulate the location list
@@ -147,3 +144,24 @@ let g:fzf_preview_window = ['up:40%', 'ctrl-/']
 nmap <leader><tab> <plug>(fzf-maps-n)
 nmap <leader>o <plug>(coc-declaration)
 
+
+"switch to last edited buffer. Works only with 2 buffers
+nnoremap <C-b> <C-^>
+
+"remap Ctrl-E to scroll down in insert mode
+inoremap <C-E> <C-X><C-E>
+"remap Ctrl-U to scroll up in insert mode 
+inoremap <C-U> <C-X><C-Y>
+
+"Copy the content's of the system's clipboard (Ctrl+C) 
+"to the unnamed register (so that you can Ctrl-C in another app and simply
+"do `p` in normal mode copy the contents into the file.
+"Note: For this , vim needs to be built with the `+clipboard` option (needs
+"X11 on Linux)
+set clipboard=unnamed
+
+"TODO: Figure out what this shows
+nmap <leader>e <plug>(coc-diagnostic-info)
+
+"Map leader f to fzf starting from home directory
+nnoremap <leader>f :FZF ~<CR>
