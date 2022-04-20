@@ -111,15 +111,14 @@ augroup filetype_clojure
   nmap <localleader>b <Plug>(iced_barf)
 augroup END
 
-augroup filetype_zig
-  silent! autocmd BufWritePre *.zig call CocAction('format')
-  "zig loads errors in the location list
-  "set shortcuts to manipulate the location list
-  nmap <leader>lo :lopen<CR>
-  nmap <leader>lc :lclose<CR>
-  nmap <leader>ln :lnext<CR>
-  nmap <leader>lp :lprevious<CR>
-augroup END
+silent! autocmd BufWritePre *.zig call CocAction('format')
+"coc diagnostics loads list of erros in the location list
+"we setup shortcuts to the location list to manipulate it easily
+"set shortcuts to manipulate the location list
+nmap <leader>lo :lopen<CR>
+nmap <leader>lc :lclose<CR>
+nmap <leader>ln :lnext<CR>
+nmap <leader>lp :lprevious<CR>
 
 augroup AutoDeleteNetrwHiddenBuffers
   au!
@@ -127,10 +126,6 @@ augroup AutoDeleteNetrwHiddenBuffers
 augroup end
 
 
-"`>a points to end of selection in visual mode
-"`<i point to beginning of selection in visual mode
-vmap <leader>sq <Esc>`>a'<ESC>`<i'<ESC>
-vmap <leader>dq <Esc>`>a"<ESC>`<i"<ESC>
 "use * in Normal mode, to jump to search word under cursor in the forward direction
 "use # in Normal mode, to jump to search word under cursor in the backward direction
 
@@ -142,7 +137,8 @@ let g:rooter_patterns = [".git", "Makefile", "build.zig", "package.json"]
 let g:fzf_preview_window = ['up:40%', 'ctrl-/']
 
 nmap <leader><tab> <plug>(fzf-maps-n)
-nmap <leader>o <plug>(coc-declaration)
+nmap <leader>gd <plug>(coc-declaration)
+nmap <leader>gg <plug>(coc-implementation)
 
 
 "switch to last edited buffer. Works only with 2 buffers
@@ -160,8 +156,25 @@ inoremap <C-U> <C-X><C-Y>
 "X11 on Linux)
 set clipboard=unnamed
 
-"TODO: Figure out what this shows
-nmap <leader>e <plug>(coc-diagnostic-info)
-
 "Map leader f to fzf starting from home directory
 nnoremap <leader>f :FZF ~<CR>
+
+"Create folds by understanding the syntax of the file
+set foldmethod=syntax
+"when foldmethod is syntax, all files when opened, have folds
+"automatically created. Disable this by setting nofoldenable
+set nofoldenable
+
+"When on a symbol, highlight it and its references
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+
+"
+"<C-u> in command line mode wipes all characters from cursor to beginning of line
+"Why is this needed ? 
+"When pressing `:` to invoke command mode from normal mode, a lot of
+"keypresses or commands emit a range, thus fucking up the command you want to
+"execute. Example, when you have a visual selection and then press `:` the `:`
+"is followed by a range. The `:<C-u> wipes all this range in front of the
+"command
+nnoremap <silent> <leader>d :<C-u> CocDiagnostics<CR>
