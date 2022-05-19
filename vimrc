@@ -83,6 +83,8 @@ nmap <C-h> <C-W>h
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 nmap <C-.> <C-W>>
+nmap <C-=> <C-W>=
+nmap <C-\> <C-W><BAR>
 
 "uncommment below to have NERDTree open when you start the editor
 "but it is too noisy
@@ -140,9 +142,6 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 nmap <leader>gd <plug>(coc-declaration)
 nmap <leader>gg <plug>(coc-implementation)
 
-
-"switch to last edited buffer. Works only with 2 buffers
-nnoremap <C-b> <C-^>
 
 "remap Ctrl-E to scroll down in insert mode
 inoremap <C-E> <C-X><C-E>
